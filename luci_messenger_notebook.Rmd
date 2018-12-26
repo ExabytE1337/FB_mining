@@ -1,0 +1,29 @@
+---
+title: "Luci Facebook messages"
+output: html_notebook
+---
+
+## Let's explore how the number of messages in time looks like
+
+```{r results = 'hide'}
+library(tidyverse)
+library(lubridate)
+library(Lori)
+df <- readRDS("df.rds")
+```
+
+```{r}
+min(df$Date)
+max(df$Date)
+sekvencia <- seq(ymd(min(df$Date)),ymd(max(df$Date)), by = 'years')
+tema <- scale_fill_manual(values = matlab_pal())
+ggplot(df,aes(x = year(Date),fill = Author)) + geom_bar() + tema
+ggplot(df,aes(x = format(df$Date, "%Y-%m"),fill= Author)) + geom_bar() + theme_minimal() +
+  theme(plot.caption = element_text(vjust = 1)) +
+  labs(x = "Year and Month", y = "Number of messages") + theme(plot.subtitle = element_text(vjust = 1), 
+    axis.text.x = element_text(angle = 45)) +
+  scale_x_discrete(breaks = format(seq(ymd(min(df$Date)),ymd(max(df$Date)), by = 'years'),"%Y-%m"))  +
+  tema
+  
+```
+
